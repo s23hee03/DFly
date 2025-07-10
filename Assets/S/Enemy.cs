@@ -56,14 +56,19 @@ public class Enemy : MonoBehaviour
             Missile missile = collision.GetComponent<Missile>();
             StopAllCoroutines(); // 기존 플래시 코루틴 중지
             StartCoroutine("HitColor");
-            enemyHp = enemyHp - missile.missileDamage; // 적의 체력 감소
-            if (enemyHp < 0)
+            enemyHp -= missile.missileDamage; // 적의 체력 감소
+            if (enemyHp <= 0)
             {
                 Destroy(this.gameObject); // 적 제거
                 Instantiate(Coin, transform.position, Quaternion.identity); // 코인 생성
                 Instantiate(Effect, transform.position, Quaternion.identity); // 이펙트 생성
             }
             TakeDamage(missile.missileDamage); // 데미지 처리
+        }
+        // 플레이어와 닿았을 때 게임 오버
+        else if (collision.tag == "Player")
+        {
+            GameManager.Instance.GameOver();
         }
     }
     IEnumerator HitColor()

@@ -50,8 +50,8 @@ MonoBehaviour:
   damaegeTextPrefab: {fileID: 525359336275424641, guid: c46667d21f100eb4f8daae6e6fa1bd4a, type: 3}
   flashColor: {r: 1, g: 0, b: 0, a: 1}
   flashDuration: 0.1
-  enemyHp: 5
-  moveSpeed: 3
+  enemyHp: 2
+  moveSpeed: 2
   Coin: {fileID: 6447714881457882979, guid: f082722b09abd874086b11d1013e0dfc, type: 3}
   Effect: {fileID: 6342507552349231116, guid: c685259a143c94b49bc6caf6581204ce, type: 3}
 --- !u!212 &206794727379464164

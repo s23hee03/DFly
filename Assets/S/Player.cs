@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     private float shootInverval = 0.05f; // 발사 간격
     private float lastshotTime = 0f; // 마지막 발사 시간
     private Animator animator;
+    private bool tripleMissileMode = false; // 3발 모드 여부
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,7 +48,24 @@ public class Player : MonoBehaviour
     {
         if (Time.time - lastshotTime > shootInverval)
         {
-            Instantiate(missilePrefabs[missIndex], spPostion.position, Quaternion.identity);
+            if (tripleMissileMode)
+            {
+                // 3발 모드일 때: 플레이어 기준으로 나선(퍼지는) 방향으로 발사
+                float[] angles = { 0f, 20f, -20f }; // 가운데, 왼쪽, 오른쪽 (각도 조절 가능)
+                foreach (float angle in angles)
+                {
+                    Instantiate(
+                        missilePrefabs[missIndex],
+                        spPostion.position,
+                        Quaternion.Euler(0, 0, angle)
+                    );
+                }
+            }
+            else
+            {
+                // 일반 발사
+                Instantiate(missilePrefabs[missIndex], spPostion.position, Quaternion.identity);
+            }
             lastshotTime = Time.time;
         }
     }
@@ -63,5 +82,18 @@ public class Player : MonoBehaviour
         {
             missIndex = missilePrefabs.Length - 1;
         }
+    }
+
+    // Player.cs 내부에 추가
+    public IEnumerator TripleMissileForSeconds(float seconds)
+    {
+        EnableTripleMissile(true); // 3발 모드 ON
+        yield return new WaitForSeconds(seconds);
+        EnableTripleMissile(false); // 3발 모드 OFF
+    }
+
+    private void EnableTripleMissile(bool enable)
+    {
+        tripleMissileMode = enable; // tripleMissileMode는 bool 타입 필드로 선언 필요
     }
 }
